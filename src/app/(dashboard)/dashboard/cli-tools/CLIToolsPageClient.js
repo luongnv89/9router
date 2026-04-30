@@ -5,6 +5,7 @@ import { Card, CardSkeleton } from "@/shared/components";
 import { CLI_TOOLS } from "@/shared/constants/cliTools";
 import { getModelsByProviderId, PROVIDER_ID_TO_ALIAS } from "@/shared/constants/models";
 import { ClaudeToolCard, CodexToolCard, DroidToolCard, OpenClawToolCard, HermesToolCard, DefaultToolCard, OpenCodeToolCard, MitmLinkCard } from "./components";
+import { filterActiveProviders } from "@/shared/utils/providerFilters";
 import { MITM_TOOLS } from "@/shared/constants/cliTools";
 
 const CLOUD_URL = process.env.NEXT_PUBLIC_CLOUD_URL;
@@ -102,7 +103,7 @@ export default function CLIToolsPageClient({ machineId }) {
     }
   };
 
-  const getActiveProviders = () => connections.filter(c => c.isActive !== false);
+  const getActiveProviders = () => filterActiveProviders(connections);
 
   const getAllAvailableModels = () => {
     const activeProviders = getActiveProviders();
