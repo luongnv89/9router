@@ -102,7 +102,13 @@ export default function CLIToolsPageClient({ machineId }) {
     }
   };
 
-  const getActiveProviders = () => connections.filter(c => c.isActive !== false);
+  const getActiveProviders = () => connections.filter(c => {
+    if (c.isActive === false) return false;
+    if (c.testStatus && c.testStatus !== "active" && c.testStatus !== "success") return false;
+    const hasKey = c.apiKey || c.providerSpecificData?.apiKey;
+    const hasOAuth = c.oauthState || c.providerSpecificData?.token;
+    return hasKey || hasOAuth;
+  });
 
   const getAllAvailableModels = () => {
     const activeProviders = getActiveProviders();
